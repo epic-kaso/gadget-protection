@@ -1,0 +1,39 @@
+<div class="text-center" ng-init="isCalculatingPremium = false;calculationError = false;">
+
+    <div class="processing-ticket" ng-show="isCalculatingPremium">
+        <h2>Please Wait while GPP Premium is calculated..</h2>
+
+        <div class="text-center">
+            <img src="/img/loader.gif"/>
+        </div>
+    </div>
+
+    <div class="alert alert-danger error" ng-show="calculationError">
+        <p>Error occurred while creating ticket, try again.</p>
+    </div>
+
+    <div class="device-grade" ng-show="!calculationError && !isCalculatingPremium">
+        <div class="row">
+            <div class="col-sm-6 col-sm-offset-3">
+                <h4>Device Premium</h4>
+
+                <div class="text-center">
+                    <span class="device-grade">{{ ticket.premium }}</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="row">
+                <div class="col-sm-3">
+                    <button ng-click="nextStepThree()" class="btn btn-success btn-block btn-base">Accepts Offer</button>
+                </div>
+                <div class="col-sm-3">
+                    <button ng-click="goHome()" class="btn btn-danger btn-block btn-base">Rejects Offer</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</div>

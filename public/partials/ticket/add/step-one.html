@@ -1,0 +1,59 @@
+<h4>Basic Details</h4>
+<hr/>
+<form name="UserTicketForm" ng-submit="nextStepTwo()">
+
+    <div class="form-group">
+        <input type="text" required=""
+               placeholder="Device Make"
+               ng-model="ticket.device_make"
+               class="form-control inmate-search-box"/>
+    </div>
+
+    <div class="form-group">
+        <input type="text" required=""
+               placeholder="Device Model"
+               ng-model="ticket.device_model"
+               class="form-control inmate-search-box"/>
+    </div>
+
+    <div class="form-group evaluate">
+        <select class="form-control" name="">
+            <option value="">Select Device Category</option>
+            <option value="">TV</option>
+            <option value="">Laptop</option>
+            <option value="">Phone</option>
+            <option value="">Tablet</option>
+        </select>
+    </div>
+
+    <div class="form-group evaluate">
+        <select class="form-control" name="">
+            <option value="">Select Purchase Store</option>
+            <option value="">Konga.com</option>
+            <option value="">Jumia</option>
+            <option value="">Palms</option>
+            <option value="">Airtel</option>
+        </select>
+    </div>
+
+    <div class="form-group">
+        <input type="text" required=""
+               placeholder="Receipt #"
+               ng-model="ticket.device_receipt_id"
+               class="form-control inmate-search-box"/>
+    </div>
+
+    <div class="form-group">
+        <input type="text" required=""
+               placeholder="Price"
+               ng-model="ticket.device_price"
+               class="form-control inmate-search-box"/>
+    </div>
+
+    <!--ng-disabled="UserTicketForm.$invalid"-->
+
+    <div class="form-group">
+        <button class="btn search-btn back-btn pull-right" ng-click="nextStepTwo()">Next <span
+                class="fa fa-chevron-right"></span></button>
+    </div>
+</form>

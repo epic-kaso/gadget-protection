@@ -1,0 +1,43 @@
+<div class="panel">
+    <div class="panel-body">
+        <div class="col-sm-6">
+            <h2>Ticket Details</h2>
+            <table class="table table-review">
+                <tr>
+                    <td>Last Name</td>
+                    <td><strong>{{ ticket.customer_last_name }}</strong></td>
+                </tr>
+                <tr>
+                    <td>First Name</td>
+                    <td><strong>{{ ticket.customer_first_name }}</strong></td>
+                </tr>
+                <tr>
+                    <td>Email</td>
+                    <td><strong>{{ ticket.customer_email }}</strong></td>
+                </tr>
+                <tr>
+                    <td>Phone</td>
+                    <td><strong>{{ ticket.customer_phone_number }}</strong></td>
+                </tr>
+            </table>
+        </div>
+        <div class="col-sm-6">
+            <h2>GPP Benefits</h2>
+
+            <table class="table table-review">
+                <tr>
+                    <td>Reward</td>
+                    <td><strong>{{ ticket.reward }}</strong></td>
+                </tr>
+                <tr>
+                    <td>Bonus</td>
+                    <td><strong>{{ ticket.network.description }}</strong></td>
+                </tr>
+            </table>
+
+            <div class="row">
+                <a class="btn btn-danger" ng-click="deleteItem(ticket.id)">Delete</a>
+            </div>
+        </div>
+    </div>
+</div>

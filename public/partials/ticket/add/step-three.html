@@ -1,0 +1,46 @@
+<h4>User Details</h4>
+<hr/>
+<form name="UserTicketForm" ng-submit="nextStepFour()">
+
+    <div class="form-group">
+        <input type="text" required=""
+               placeholder="GPP Token  (required)"
+               ng-model="ticket.gpp_token"
+               class="form-control inmate-search-box"/>
+    </div>
+
+    <div class="form-group">
+        <input type="text" required=""
+               placeholder="User Phone Number (required)"
+               ng-model="ticket.phone_number"
+               class="form-control inmate-search-box"/>
+    </div>
+
+    <div class="form-group">
+        <input type="text"
+               placeholder="Last Name"
+               ng-model="ticket.last_name"
+               class="form-control inmate-search-box"/>
+    </div>
+
+    <div class="form-group">
+        <input type="text"
+               placeholder="First Name"
+               ng-model="ticket.first_name"
+               class="form-control inmate-search-box"/>
+    </div>
+
+    <div class="form-group">
+        <textarea
+                placeholder="Address"
+                ng-model="ticket.address"
+                class="form-control inmate-search-box"></textarea>
+    </div>
+
+    <!--ng-disabled="UserTicketForm.$invalid"-->
+
+    <div class="form-group">
+        <button class="btn search-btn back-btn pull-right" ng-click="nextStepFinal()">Finish <span
+                class="fa fa-chevron-right"></span></button>
+    </div>
+</form>

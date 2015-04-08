@@ -1,0 +1,51 @@
+<div class="row">
+    <div class="col-sm-10 col-sm-offset-1">
+        <div class="row">
+            <div class="col-sm-2" ng-show="hasHistory">
+                <back-button></back-button>
+            </div>
+
+            <div class="base-resize" ng-class="{'col-sm-10': hasHistory}">
+                <form>
+                    <div class="form-group col-sm-12" style="
+                                                        padding-right: 30px;
+                                                        padding-left: 0;
+                                                    ">
+                        <div class="icon-addon addon-lg">
+                            <input type="text" id="search" name="add_gadget_category" ng-model="add_gadget_category.name"
+                                   class="form-control inmate-search-box" placeholder="Add Gadget Category">
+                            <label for="search" class="fa fa-plus" rel="tooltip" title="Add Gadget Category"></label>
+                            <a href="#" ng-click="addGadgetCategory(add_gadget_category)" class="btn btn-default search-btn"><span
+                                    class="fa fa-paper-plane"></span></a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div class="row main-content-container">
+            <div class="inmates-menu-items">
+                <div class="menu-item inmate-item" ng-repeat="vendor in models">
+                    <div class="inmate-pic">
+                        <span class="fa fa-user"></span>
+                    </div>
+
+                    <div class="inmate-bio">
+                        <h4>{{ vendor.name}}</h4>
+
+                        <a class="btn btn-danger" ng-click="deleteItem(vendor.id,$index)">Delete</a>
+                    </div>
+                </div>
+            </div>
+
+            <nav>
+                <ul class="pager search-result-pager">
+                    <li><a href="#"><span class="fa fa-chevron-left"></span></a></li>
+                    <li><a href="#"><span class="fa fa-chevron-right"></span></a></li>
+                </ul>
+            </nav>
+        </div>
+
+    </div>
+
+</div>
