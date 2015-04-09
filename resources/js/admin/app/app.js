@@ -285,6 +285,64 @@ app.config(['$urlRouterProvider', '$stateProvider',
             }
         );
 
+
+        $stateProvider.state('ticket.export',
+            {
+                url: '/export',
+                templateUrl: 'partials/ticket/export.html',
+                controller: ['$scope', 'TicketColumns', 'GadgetCategories', 'Vendors', 'ExportTicketService',
+                    function ($scope, TicketColumns, GadgetCategories, Vendors, ExportTicketService) {
+                        $scope.columns = TicketColumns.data;
+                        $scope.vendors = Vendors;
+                        $scope.vendors.push({id: 'all', name: 'All Vendors'});
+                        $scope.gadget_categories = GadgetCategories;
+                        $scope.gadget_categories.push({id: 'all', name: 'All Gadget Categories'});
+
+                        console.log($scope.columns);
+                        $scope.export = {
+                            columns: {},
+                            selectAll: false
+                        };
+
+                        $scope.$watch('export.selectAll', function (newV, oldV) {
+                            console.log('New V');
+                            console.log(newV);
+                            console.log("Old v");
+                            console.log(oldV);
+
+                            angular.forEach($scope.columns, function (value, key) {
+                                $scope.export.columns[value.slug] = newV;
+                            });
+
+                        }, true);
+
+                        $scope.exportTickets = function (item) {
+                            ExportTicketService.save(item, function (response) {
+                                console.log(response);
+                                window.location.href = response.download_link;
+                            }, function (error) {
+                                console.log('Error');
+                                console.log(error);
+                            });
+                        };
+                    }],
+                resolve: {
+                    'hasHistory': ['$rootScope', function ($rootScope) {
+                        $rootScope.hasHistory = true;
+                    }],
+                    'TicketColumns': ['$http', function ($http) {
+                        return $http.get('/resources/ticket-config');
+                    }],
+                    'GadgetCategories': ['GadgetCategoryService', function (GadgetCategoryService) {
+                        return GadgetCategoryService.query({});
+                    }],
+                    'Vendors': ['VendorService', function (VendorService) {
+                        return VendorService.query({});
+                    }]
+                }
+            }
+        );
+
         $stateProvider.state('ticket.config',
             {
                 url: '/config',

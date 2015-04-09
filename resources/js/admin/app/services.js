@@ -12,6 +12,12 @@ app.factory('TicketService', ['$resource', 'URLServ', function ($resource, URLSe
     });//URLServ.getResourceUrlFor("ticket"));
 }]);
 
+app.factory('ExportTicketService', ['$resource', 'URLServ', function ($resource, URLServ) {
+    return $resource('/resources/ticket-export/:id', {id: '@id'}, {
+        'update': {method: 'PUT'}
+    });//URLServ.getResourceUrlFor("ticket"));
+}]);
+
 app.factory('VendorService', ['$resource', 'URLServ', function ($resource, URLServ) {
     return $resource('/resources/vendor/:id', {id: '@id'}, {
         'update': {method: 'PUT'}

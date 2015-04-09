@@ -45,5 +45,20 @@ Route::group(
         Route::resource('ticket-import', 'ImportExcelToTicketController');
         Route::resource('vendor', 'VendorController');
         Route::resource('ticket', 'TicketController');
+        Route::resource('ticket-config', 'TicketConfigController');
         Route::resource('gadget-category', 'GadgetCategoryController');
+        Route::resource('ticket-export', 'ExportTicketController');
     });
+
+
+Route::get('/download-export/{file_name}', [
+    'as' => 'download-export',
+    'uses' => function ($file_name) {
+        $path = storage_path('exports/' . $file_name);
+        if (File::exists($path)) {
+            return Response::download($path);
+        } else {
+            abort(404, 'Invalid File Download');
+        }
+    }
+]);
