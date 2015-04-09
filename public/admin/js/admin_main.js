@@ -195,14 +195,14 @@ app.config(['$urlRouterProvider', '$stateProvider',
                 templateUrl: 'partials/ticket/menu.html',
                 controller: ['$scope', 'Tickets','ShowSettings', function ($scope, Tickets,ShowSettings) {
                     $scope.showSettings = ShowSettings;
-                    $scope.tickets = Tickets;
+                    $scope.tickets = Tickets.data;
                 }],
                 resolve: {
                     'hasHistory': ['$rootScope', function ($rootScope) {
                         $rootScope.hasHistory = false;
                     }],
                     'Tickets': ['TicketService', function (TicketService) {
-                        return TicketService.query({limit: 6});
+                        return TicketService.get({limit: 6});
                     }],
                     'ShowSettings':['CurrentUser',function(CurrentUser){
                         return CurrentUser.get().role  != 'adviser';
@@ -216,7 +216,7 @@ app.config(['$urlRouterProvider', '$stateProvider',
                 url: '/list',
                 templateUrl: 'partials/ticket/list.html',
                 controller: ['$scope', 'Tickets', 'TicketService', function ($scope, Tickets, TicketService) {
-                    $scope.tickets = Tickets;
+                    $scope.tickets = Tickets.data;
 
                     $scope.deleteItem = function (id) {
                         TicketService.delete({id: id}, function (response) {
@@ -231,7 +231,7 @@ app.config(['$urlRouterProvider', '$stateProvider',
                         $rootScope.hasHistory = true;
                     }],
                     'Tickets': ['TicketService', function (TicketService) {
-                        return TicketService.query();
+                        return TicketService.get({limit: 20});
                     }]
                 }
             }
