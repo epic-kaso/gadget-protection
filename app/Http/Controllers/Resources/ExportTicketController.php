@@ -43,7 +43,9 @@ class ExportTicketController extends Controller
     {
         $gadget_category_id = $request->get('gadget_category_id', 'all');
         $vendor_id = $request->get('vendor_id', 'all');
+
         $columns = $request->get('columns', null);
+
 
         $selectCols = [];
 
@@ -70,8 +72,15 @@ class ExportTicketController extends Controller
         $data = $builder->get($selectCols);
 
         foreach ($data as $d) {
-            $d->vendor_name = $d->vendor->name;
-            $d->gadget_category_name = $d->gadget_category->name;
+
+            if (property_exists($d, 'vendor')) {
+                $d->vendor_name = $d->vendor->name;
+                unset($d->vendor_id);
+            }
+            if (property_exists($d, 'gadget_category')) {
+                $d->gadget_category_name = $d->gadget_category->name;
+                unset($d->gadget_category_id);
+            }
         }
 
         $response = \Excel::create('Export-' . Str::slug(Carbon::now()->toDateTimeString()),
