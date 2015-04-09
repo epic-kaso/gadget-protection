@@ -6,7 +6,7 @@
 
 var app =  angular.module('adminApp.services',[]);
 
-app.factory('TicketServ', ['$resource', 'URLServ', function ($resource, URLServ) {
+app.factory('TicketService', ['$resource', 'URLServ', function ($resource, URLServ) {
     return $resource('/resources/ticket/:id', {id: '@id'}, {
         'update': {method: 'PUT'}
     });//URLServ.getResourceUrlFor("ticket"));

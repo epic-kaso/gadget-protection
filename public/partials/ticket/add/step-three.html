@@ -4,8 +4,8 @@
 
     <div class="form-group">
         <input type="text" required=""
-               placeholder="GPP Token  (required)"
-               ng-model="ticket.gpp_token"
+               placeholder="GPP Policy Number  (required)"
+               ng-model="ticket.gpp_policy_number"
                class="form-control inmate-search-box"/>
     </div>
 
@@ -31,8 +31,16 @@
     </div>
 
     <div class="form-group">
+        <input type="email"
+               placeholder="Email"
+               ng-model="ticket.email"
+               class="form-control inmate-search-box"/>
+    </div>
+
+    <div class="form-group">
         <textarea
                 placeholder="Address"
+                style="height: 130px;"
                 ng-model="ticket.address"
                 class="form-control inmate-search-box"></textarea>
     </div>
@@ -40,7 +48,8 @@
     <!--ng-disabled="UserTicketForm.$invalid"-->
 
     <div class="form-group">
-        <button class="btn search-btn back-btn pull-right" ng-click="nextStepFinal()">Finish <span
+        <button class="btn search-btn back-btn pull-right"
+                ng-click="nextStepFinal(ticket)">Finish <span
                 class="fa fa-chevron-right"></span></button>
     </div>
 </form>

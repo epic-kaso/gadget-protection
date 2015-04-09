@@ -6,24 +6,43 @@
             </div>
 
             <div class="base-resize" ng-class="{'col-sm-10': hasHistory}">
-                <form>
-                    <div class="form-group col-sm-12" style="
-                                                        padding-right: 30px;
-                                                        padding-left: 0;
-                                                    ">
-                        <div class="icon-addon addon-lg">
-                            <input type="text" id="search" name="add_gadget_category" ng-model="add_gadget_category.name"
-                                   class="form-control inmate-search-box" placeholder="Add Gadget Category">
-                            <label for="search" class="fa fa-plus" rel="tooltip" title="Add Gadget Category"></label>
-                            <a href="#" ng-click="addGadgetCategory(add_gadget_category)" class="btn btn-default search-btn"><span
-                                    class="fa fa-paper-plane"></span></a>
-                        </div>
-                    </div>
-                </form>
             </div>
         </div>
 
+        <div class="row" ng-init="showAddForm = false">
+            <h3>
+                <span class="btn" ng-click="showAddForm = !showAddForm">
+                    <i class="fa fa-lg" ng-class="{'fa-plus': !showAddForm,'fa-minus': showAddForm}"></i>
+                </span> Add Category</h3>
+            <hr/>
+            <div ng-show="showAddForm">
+                <form name="addGadgetCategory">
+                    <div class="form-group col-sm-12">
+                        <input type="text" ng-model="add_gadget_category.name" required=""
+                               class="form-control inmate-search-box" placeholder="Add Gadget Category eg Electronics">
+                    </div>
+                    <div class="form-group col-sm-12">
+                        <input type="text" ng-pattern="/^\d+(\.\d+)?$/" ng-model="add_gadget_category.percentage"
+                               required=""
+                               class="form-control inmate-search-box" placeholder="RPP Percentage eg 13.12">
+                    </div>
+                    <div class="form-group col-sm-12">
+                        <input type="number" ng-model="add_gadget_category.fixed"
+                               required=""
+                               class="form-control inmate-search-box" placeholder="Fixed eg 132">
+                    </div>
+                    <div class="form-group col-sm-4">
+                        <a href="#" ng-click="addGadgetCategory(add_gadget_category,$event)"
+                           ng-disabled="addGadgetCategory.$invalid" class="btn btn-primary btn-block">Add</a>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+
         <div class="row main-content-container">
+            <h3> All Categories</h3>
+            <hr/>
             <div class="inmates-menu-items">
                 <div class="menu-item inmate-item" ng-repeat="vendor in models">
                     <div class="inmate-pic">

@@ -1,6 +1,8 @@
 <?php namespace SupergeeksGadgetProtection\Http\Requests;
 
 
+use SupergeeksGadgetProtection\Ticket;
+
 class TicketRequest extends Request
 {
 
@@ -11,7 +13,15 @@ class TicketRequest extends Request
      */
     public function authorize()
     {
-        return true;//Auth::check();
+        if ($this->is('PUT') || $this->is('PATCH')) {
+            if (\Auth::check() && \Auth::user()->isAdmin()) {
+                return true;
+            } else {
+                return Ticket::find($this->get('id'))->user_id == \Auth::user()->id;
+            }
+        } else {
+            return \Auth::check();
+        }
     }
 
     /**
@@ -21,22 +31,38 @@ class TicketRequest extends Request
      */
     public function rules()
     {
-        if ($this->getMethod() == strtolower('get')) {
-            return [];
+
+        if ($this->is('post')) {
+            return [
+                'device_make' => 'required',
+                'device_model' => 'required',
+                'gadget_category_id' => 'required',
+                'vendor_id' => 'required',
+                'device_receipt_id' => 'required',
+                'device_price' => 'required',
+                'device_premium' => 'required',
+                'gpp_policy_number' => 'required|unique:tickets',
+                'last_name' => 'alpha_dash',
+                'first_name' => 'alpha_dash',
+                'email' => 'email',
+                'phone_number' => 'required',
+                'address' => '',
+            ];
         }
 
-        return [
-            'customer_last_name' => 'required|alpha_dash',
-            'customer_first_name' => 'required|alpha_dash',
-            'customer_email' => 'required|email',
-            'customer_phone_number' => 'required|digits_between:11,14',
-            'customer_device_imei' => 'required|digits:15',
-            'device_grade' => 'alpha',
-            'gadget_id' => 'integer',
-            'network_id' => 'integer',
-            'size_id' => 'integer',
-            'reward' => ''
-        ];
+        if ($this->is('PUT') || $this->is('PATCH')) {
+            return [
+                'id' => 'required|exists:tickets',
+                'gpp_policy_number' => '',
+                'last_name' => '',
+                'first_name' => '',
+                'email' => 'email',
+                'phone_number' => '',
+                'address' => '',
+            ];
+        }
+
+        return [];
     }
 
 }

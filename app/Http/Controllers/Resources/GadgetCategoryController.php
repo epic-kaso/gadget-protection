@@ -34,7 +34,15 @@ class GadgetCategoryController extends Controller
      */
     public function store(GadgetCategoryRequest $request)
     {
-        $gadget_category = GadgetCategory::firstOrCreate(['name' => $request->get('name')]);
+        $gadget_category = GadgetCategory::firstOrNew(
+            [
+                'name' => $request->get('name')
+            ]);
+
+        $gadget_category->percentage = $request->get('percentage');
+        $gadget_category->fixed = $request->get('fixed');
+        $gadget_category->save();
+
         return $gadget_category;
     }
 
@@ -62,7 +70,11 @@ class GadgetCategoryController extends Controller
         $gadget_category = GadgetCategory::find($id);
         if (empty($gadget_category))
             abort(404);
-        $gadget_category->name = $request->get('name');
+
+        $gadget_category->name = $request->get('name', $gadget_category->name);
+        $gadget_category->percentage = $request->get('percentage', $gadget_category->percentage);
+        $gadget_category->fixed = $request->get('fixed', $gadget_category->fixed);
+
         $gadget_category->save();
         return $gadget_category;
     }

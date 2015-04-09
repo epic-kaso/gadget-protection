@@ -18,17 +18,17 @@
                 <h4>Device Premium</h4>
 
                 <div class="text-center">
-                    <span class="device-grade">{{ ticket.premium }}</span>
+                    <span class="device-grade">{{ ticket.device_premium | currency:'₦':0 }}</span>
                 </div>
             </div>
         </div>
 
         <div class="row">
-            <div class="row">
-                <div class="col-sm-3">
+            <div class="row text-center">
+                <div class="col-sm-6">
                     <button ng-click="nextStepThree()" class="btn btn-success btn-block btn-base">Accepts Offer</button>
                 </div>
-                <div class="col-sm-3">
+                <div class="col-sm-6">
                     <button ng-click="goHome()" class="btn btn-danger btn-block btn-base">Rejects Offer</button>
                 </div>
             </div>

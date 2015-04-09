@@ -4,12 +4,14 @@
 var module = angular.module('adminApp.controllers', ['adminApp.services']);
 
 module.controller('NewTicketController', [
-    '$scope', 'Gadgets', '$state', '$stateParams', 'Vendors', 'ToastService',
-    '$cookieStore',
-    function ($scope, Gadgets, $state, $stateParams, Vendors, ToastService,
-              $cookieStore) {
+    '$scope', 'GadgetCategories', '$state', '$stateParams', 'Vendors', 'TicketService',
+    function ($scope, GadgetCategories, $state, $stateParams, Vendors, TicketService) {
         $scope.vendors = Vendors;
-        $scope.gadget_categories = Gadgets;
+        $scope.gadget_categories = GadgetCategories;
+
+        console.log($scope.gadget_categories);
+        console.log($scope.vendors);
+
         $scope.activeStep = 'stepOne';
         $scope.isCreatingTicket = true;
         $scope.creationError = false;
@@ -28,9 +30,17 @@ module.controller('NewTicketController', [
             $state.go('ticket.add.stepOne');
         };
 
-        $scope.nextStepTwo = function () {
+        $scope.nextStepTwo = function (ticket) {
             $scope.activeStep = 'stepTwo';
-            $state.go('ticket.add.stepTwo');
+            if (
+                angular.isDefined(ticket.device_price) &&
+                angular.isDefined(ticket.gadget_category)
+            ) {
+                $scope.ticket = calculatePremium(ticket);
+                $state.go('ticket.add.stepTwo');
+            } else {
+                alert('Enter Price & Select Gadget Category');
+            }
         };
 
         $scope.nextStepThree = function () {
@@ -38,73 +48,59 @@ module.controller('NewTicketController', [
             $state.go('ticket.add.stepThree');
         };
 
-        $scope.nextStepFour = function () {
-            $scope.activeStep = 'stepFour';
-            $state.go('ticket.add.stepFour');
-        };
+        $scope.nextStepFinal = function (ticket) {
+            if (
+                angular.isUndefined(ticket.device_price) ||
+                angular.isUndefined(ticket.device_receipt_id) ||
+                angular.isUndefined(ticket.vendor) ||
+                angular.isUndefined(ticket.gadget_category) ||
+                angular.isUndefined(ticket.device_model) ||
+                angular.isUndefined(ticket.device_make) ||
+                angular.isUndefined(ticket.device_premium)
+            ) {
+                $scope.ticket = ticket;
+                console.log(ticket);
+                $scope.nextStepOne();
+                return;
+            }
 
-        $scope.nextStepFinal = function () {
-            $scope.activeStep = 'stepFinal';
-            calculateDeviceReward();
-            $state.go('ticket.add.final');
-            $scope.createTicket($scope.ticket);
+            if (
+                angular.isUndefined(ticket.gpp_policy_number) ||
+                angular.isUndefined(ticket.phone_number)
+            ) {
+                $scope.ticket = ticket;
+                console.log(ticket);
+                $scope.nextStepThree();
+                return;
+            }
+
+
+            console.log(ticket);
+
+            ticket.gadget_category_id = ticket.gadget_category.id;
+            ticket.vendor_id = ticket.vendor.id;
+
+            TicketService.save(ticket, function (response) {
+                $scope.activeStep = 'stepFinal';
+                $state.go('ticket.add.final');
+            }, function (error) {
+                alert('Failed To Save Ticket, try again');
+            });
         };
 
         $scope.goHome = function () {
-            $state.go('ticket.menu');
+            $state.go('ticket.list');
         };
 
-        function calculateDeviceGrade() {
-            return $scope.ticket.device_grade;
-        }
 
-        function calculateDeviceReward() {
-            $scope.selected.grade = calculateDeviceGrade();
-            $scope.selected.size = $scope.ticket.size_id;
+        function calculatePremium(ticket) {
+            console.log('Calculate Premium');
+            console.log(ticket);
+            var percentage = parseFloat(ticket.gadget_category.percentage) / 100;
+            var price = parseFloat(ticket.device_price);
+            var fixed = parseFloat(ticket.gadget_category.fixed);
+            ticket.device_premium = Math.round((price * percentage) + fixed);
 
-            angular.forEach($scope.selected.device.sizes, function (value, key) {
-                if (value.id == $scope.ticket.size_id) {
-                    this.size = value.value;
-                }
-            }, $scope.selected);
-
-            $scope.ticket.reward = GadgetEvaluationReward.calculate($scope.selected);
-        }
-
-        function stepTwoActive() {
-            return $scope.activeStep == 'stepTwo';
-        }
-
-        function stepThreeActive() {
-            return $scope.activeStep == 'stepThree';
-        }
-
-        function stepFourActive() {
-            return $scope.activeStep == 'stepFour';
-        }
-
-        function stepFinalActive() {
-            return $scope.activeStep == 'stepFinal';
-        }
-
-        function checkTestsPassed(obj) {
-            var state = {ready: true};
-
-            angular.forEach(obj, function (value, key) {
-                if (value == 'no') {
-                    this.ready = false;
-                }
-            }, state);
-
-            return state.ready;
-        }
-
-        function setViewState(ready) {
-            $scope.activeNextButton = ready;
-            if (ready) {
-                $scope.message = "Ok, proceed.";
-            } else {
-                $scope.message = "Sorry, Device doesn't Qualify to Continue";
-            }
+            return ticket;
         }
     }]);

@@ -16,6 +16,8 @@ class CreateGadgetCategoriesTable extends Migration
         Schema::create('gadget_categories', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name')->unique();
+            $table->decimal('percentage');
+            $table->decimal('fixed');
             $table->text('logo')->nullable();
             $table->timestamps();
         });

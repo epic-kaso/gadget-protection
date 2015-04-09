@@ -10,6 +10,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 
 	use Authenticatable, CanResetPassword;
 
+
 	/**
 	 * The database table used by the model.
 	 *
@@ -44,6 +45,11 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     public function setAsAdviser()
     {
         $this->role = 'adviser';
+    }
+
+    public function tickets()
+    {
+        return $this->hasMany('SupergeeksGadgetProtection\Ticket');
     }
 
 }

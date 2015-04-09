@@ -44,5 +44,6 @@ Route::group(
         Route::resource('advisers', 'AdvisersController');
         Route::resource('ticket-import', 'ImportExcelToTicketController');
         Route::resource('vendor', 'VendorController');
+        Route::resource('ticket', 'TicketController');
         Route::resource('gadget-category', 'GadgetCategoryController');
     });

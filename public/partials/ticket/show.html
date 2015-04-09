@@ -1,43 +1,102 @@
 <div class="panel">
-    <div class="panel-body">
+    <div class="panel-body" ng-init="editMode = false;">
         <div class="col-sm-6">
             <h2>Ticket Details</h2>
             <table class="table table-review">
                 <tr>
                     <td>Last Name</td>
-                    <td><strong>{{ ticket.customer_last_name }}</strong></td>
+                    <td ng-hide="editMode"><strong>{{ ticket.last_name || 'N/A'}}</strong></td>
+                    <td ng-show="editMode"><input class="form-control" type="text" ng-model="editTicket.last_name"/>
+                    </td>
                 </tr>
                 <tr>
                     <td>First Name</td>
-                    <td><strong>{{ ticket.customer_first_name }}</strong></td>
+                    <td ng-hide="editMode"><strong>{{ ticket.first_name || 'N/A' }}</strong></td>
+                    <td ng-show="editMode"><input class="form-control" type="text" ng-model="editTicket.first_name"/>
+                    </td>
                 </tr>
                 <tr>
                     <td>Email</td>
-                    <td><strong>{{ ticket.customer_email }}</strong></td>
+                    <td ng-hide="editMode"><strong>{{ ticket.email || 'N/A'}}</strong></td>
+                    <td ng-show="editMode"><input class="form-control" type="text" ng-model="editTicket.email"/></td>
                 </tr>
                 <tr>
                     <td>Phone</td>
-                    <td><strong>{{ ticket.customer_phone_number }}</strong></td>
+                    <td ng-hide="editMode"><strong>{{ ticket.phone_number || 'N/A'}}</strong></td>
+                    <td ng-show="editMode"><input class="form-control" type="text" ng-model="editTicket.phone_number"/>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>Address</td>
+                    <td ng-hide="editMode"><strong>{{ ticket.address || 'N/A' }}</strong></td>
+                    <td ng-show="editMode">
+                        <textarea style="height: 120px" class="form-control"
+                                  ng-model="editTicket.gpp_policy_number"></textarea>
+                    </td>
                 </tr>
             </table>
         </div>
         <div class="col-sm-6">
-            <h2>GPP Benefits</h2>
+            <h2>GPP Details</h2>
 
             <table class="table table-review">
                 <tr>
-                    <td>Reward</td>
-                    <td><strong>{{ ticket.reward }}</strong></td>
+                    <td>Policy Number</td>
+                    <td ng-hide="editMode"><strong>{{ ticket.gpp_policy_number }}</strong></td>
+                    <td ng-show="editMode"><input class="form-control" type="text"
+                                                  ng-model="editTicket.gpp_policy_number"/></td>
                 </tr>
                 <tr>
-                    <td>Bonus</td>
-                    <td><strong>{{ ticket.network.description }}</strong></td>
+                    <td>Premium</td>
+                    <td><strong>{{ ticket.device_premium | currency:'₦':0 }}</strong></td>
+                </tr>
+                <tr>
+                    <td>Gadget Category</td>
+                    <td ng-hide="editMode"><strong>{{ ticket.gadget_category.name }}</strong></td>
+                    <td ng-show="editMode">
+                        <select class="form-control"
+                                required=""
+                                ng-model="editTicket.gadget_category_id"
+                                ng-options="gadget.id as gadget.name for gadget in gadget_categories">
+                            <option value="">Select Device Category</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Vendor</td>
+                    <td ng-hide="editMode"><strong>{{ ticket.vendor.name }}</strong></td>
+                    <td ng-show="editMode">
+                        <select class="form-control"
+                                required=""
+                                ng-model="editTicket.vendor_id"
+                                ng-options="vendor.id as vendor.name for vendor in vendors">
+                            <option value="">Select Purchase Store</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Device</td>
+                    <td ng-hide="editMode"><strong>{{ ticket.device_make }} {{ ticket.device_model }}</strong></td>
+                    <td ng-show="editMode">
+                        <input class="form-control" type="text" ng-model="editTicket.device_make"/><br/>
+                        <input class="form-control" type="text" ng-model="editTicket.device_model"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Device Price</td>
+                    <td ng-hide="editMode"><strong>{{ ticket.device_price | currency:'₦':0 }}</strong></td>
+                    <td ng-show="editMode">
+                        <input class="form-control" type="text" ng-model="editTicket.device_price"/>
+                    </td>
                 </tr>
             </table>
+        </div>
 
-            <div class="row">
-                <a class="btn btn-danger" ng-click="deleteItem(ticket.id)">Delete</a>
-            </div>
+        <div class="col-sm-12">
+            <button class="btn btn-info" ng-click="editMode = !editMode">{{ editMode ? 'Cancel ' : '' }}Edit</button>
+            <button class="btn btn-success" ng-click="saveTicket(editTicket)" ng-show="editMode">Save</button>
+            <a class="btn btn-danger" ng-click="deleteItem(ticket.id)">Delete</a>
         </div>
     </div>
 </div>

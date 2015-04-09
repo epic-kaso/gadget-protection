@@ -17,22 +17,20 @@
     </div>
 
     <div class="form-group evaluate">
-        <select class="form-control" name="">
+        <select class="form-control"
+                required=""
+                ng-model="ticket.gadget_category"
+                ng-options="gadget as gadget.name for gadget in gadget_categories">
             <option value="">Select Device Category</option>
-            <option value="">TV</option>
-            <option value="">Laptop</option>
-            <option value="">Phone</option>
-            <option value="">Tablet</option>
         </select>
     </div>
 
     <div class="form-group evaluate">
-        <select class="form-control" name="">
+        <select class="form-control"
+                required=""
+                ng-model="ticket.vendor"
+                ng-options="vendor as vendor.name for vendor in vendors">
             <option value="">Select Purchase Store</option>
-            <option value="">Konga.com</option>
-            <option value="">Jumia</option>
-            <option value="">Palms</option>
-            <option value="">Airtel</option>
         </select>
     </div>
 
@@ -46,14 +44,17 @@
     <div class="form-group">
         <input type="text" required=""
                placeholder="Price"
+               ng-pattern="/^\d+(\.\d+)?$/"
                ng-model="ticket.device_price"
                class="form-control inmate-search-box"/>
     </div>
 
-    <!--ng-disabled="UserTicketForm.$invalid"-->
+    <!---->
 
     <div class="form-group">
-        <button class="btn search-btn back-btn pull-right" ng-click="nextStepTwo()">Next <span
+        <button ng-disabled="UserTicketForm.$invalid"
+                class="btn search-btn back-btn pull-right"
+                ng-click="nextStepTwo(ticket)">Next <span
                 class="fa fa-chevron-right"></span></button>
     </div>
 </form>

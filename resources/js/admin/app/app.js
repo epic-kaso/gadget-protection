@@ -37,12 +37,13 @@ app.config(['$urlRouterProvider', '$stateProvider',
                 controller: ['$scope', 'VendorService', 'Vendors', function ($scope, VendorService, Vendors) {
                     $scope.models = Vendors;
 
-                    $scope.addVendor = function (vendor){
+                    $scope.addVendor = function (vendor, event) {
                         VendorService.save(vendor,function(response){
                             $scope.models.push(response);
                         },function(){
                             alert('Failed To Create');
-                        })
+                        });
+                        event.preventDefault();
                     };
                     $scope.deleteItem = function (id,index) {
                         VendorService.delete({id: id}, function (response) {
@@ -72,12 +73,14 @@ app.config(['$urlRouterProvider', '$stateProvider',
                 controller: ['$scope', 'GadgetCategoryService', 'GadgetCategories', function ($scope, GadgetCategoryService, GadgetCategories) {
                     $scope.models = GadgetCategories;
 
-                    $scope.addGadgetCategory = function (category){
+                    $scope.addGadgetCategory = function (category, event) {
                         GadgetCategoryService.save(category,function(response){
                             $scope.models.push(response);
                         },function(){
                             alert('Failed To Create');
-                        })
+                        });
+
+                        event.preventDefault();
                     };
                     $scope.deleteItem = function (id,index) {
                         GadgetCategoryService.delete({id: id}, function (response) {
@@ -198,8 +201,8 @@ app.config(['$urlRouterProvider', '$stateProvider',
                     'hasHistory': ['$rootScope', function ($rootScope) {
                         $rootScope.hasHistory = false;
                     }],
-                    'Tickets': ['TicketServ', function (TicketServ) {
-                        return TicketServ.query({limit: 6});
+                    'Tickets': ['TicketService', function (TicketService) {
+                        return TicketService.query({limit: 6});
                     }],
                     'ShowSettings':['CurrentUser',function(CurrentUser){
                         return CurrentUser.get().role  != 'adviser';
@@ -212,11 +215,11 @@ app.config(['$urlRouterProvider', '$stateProvider',
             {
                 url: '/list',
                 templateUrl: 'partials/ticket/list.html',
-                controller: ['$scope', 'Tickets', 'TicketServ', function ($scope, Tickets, TicketServ) {
+                controller: ['$scope', 'Tickets', 'TicketService', function ($scope, Tickets, TicketService) {
                     $scope.tickets = Tickets;
 
                     $scope.deleteItem = function (id) {
-                        TicketServ.delete({id: id}, function (response) {
+                        TicketService.delete({id: id}, function (response) {
                             location.reload();
                         }, function (response) {
                             alert(response);
@@ -227,8 +230,8 @@ app.config(['$urlRouterProvider', '$stateProvider',
                     'hasHistory': ['$rootScope', function ($rootScope) {
                         $rootScope.hasHistory = true;
                     }],
-                    'Tickets': ['TicketServ', function (TicketServ) {
-                        return TicketServ.query();
+                    'Tickets': ['TicketService', function (TicketService) {
+                        return TicketService.query();
                     }]
                 }
             }
@@ -238,7 +241,7 @@ app.config(['$urlRouterProvider', '$stateProvider',
             {
                 url: '/import',
                 templateUrl: 'partials/ticket/import.html',
-                controller: ['$scope', 'Tickets', 'TicketServ', function ($scope, Tickets, TicketServ) {
+                controller: ['$scope', 'Tickets', 'TicketService', function ($scope, Tickets, TicketService) {
                     $scope.tickets = Tickets;
                     $scope.upload = {
                         working: false,
@@ -262,7 +265,7 @@ app.config(['$urlRouterProvider', '$stateProvider',
                     };
 
                     $scope.deleteItem = function (id) {
-                        TicketServ.delete({id: id}, function (response) {
+                        TicketService.delete({id: id}, function (response) {
                             location.reload();
                         }, function (response) {
                             alert(response);
@@ -273,8 +276,8 @@ app.config(['$urlRouterProvider', '$stateProvider',
                     'hasHistory': ['$rootScope', function ($rootScope) {
                         $rootScope.hasHistory = true;
                     }],
-                    'Tickets': ['TicketServ', function (TicketServ) {
-                        return TicketServ.query();
+                    'Tickets': ['TicketService', function (TicketService) {
+                        return TicketService.query();
                     }]
                 }
             }
@@ -344,10 +347,10 @@ app.config(['$urlRouterProvider', '$stateProvider',
                     'hasHistory': ['$rootScope', function ($rootScope) {
                         $rootScope.hasHistory = true;
                     }],
-                    'Gadgets': ['GadgetCategoryService',function(GadgetCategoryService){
+                    'GadgetCategories': ['GadgetCategoryService', function (GadgetCategoryService) {
                         return GadgetCategoryService.query({});
                     }],
-                    'Vendors':['VendorService',function(VendorService){
+                    'Vendors': ['VendorService', function (VendorService) {
                         return VendorService.query({});
                     }]
                 }
@@ -418,106 +421,69 @@ app.config(['$urlRouterProvider', '$stateProvider',
             {
                 url: '/show/{id}',
                 templateUrl: 'partials/ticket/show.html',
-                controller: ['$scope', '$stateParams','TicketServ','$state','Ticket',
-                    function ($scope, $stateParams,TicketServ,$state, Ticket) {
+                controller: ['$scope', '$stateParams', 'TicketService', '$state', 'Ticket', 'GadgetCategories', 'Vendors',
+                    function ($scope, $stateParams, TicketService, $state, Ticket, GadgetCategories, Vendors) {
                         $scope.ticket = Ticket;
+                        $scope.editTicket = JSON.parse(JSON.stringify(Ticket));
+                        $scope.vendors = Vendors;
+                        $scope.gadget_categories = GadgetCategories;
+
+                        $scope.saveTicket = function (ticket) {
+                            angular.forEach($scope.gadget_categories, function (value, key) {
+                                if (value.id == ticket.gadget_category_id) {
+                                    ticket.gadget_category = value;
+                                }
+                            });
+
+                            angular.forEach($scope.vendors, function (value, key) {
+                                if (value.id == ticket.vendor_id) {
+                                    ticket.vendor = value;
+                                }
+                            });
+
+                            ticket = calculatePremium(ticket);
+
+                            TicketService.update({id: ticket.id}, ticket).$promise.then(function (response) {
+                                console.log(response);
+                                $scope.ticket = response;
+                                $scope.editMode = false;
+                            }, function (error) {
+                                console.log(error);
+                                alert('Failed to Update, try again');
+                            });
+                        };
 
                         $scope.deleteItem = function (id) {
-                            TicketServ.delete({id: id}, function (response) {
+                            TicketService.delete({id: id}, function (response) {
                                 $state.go('ticket.list');
                             }, function (response) {
                                 alert(response);
                             });
+                        };
+
+                        function calculatePremium(ticket) {
+                            console.log('Calculate Premium');
+                            console.log(ticket);
+                            var percentage = parseFloat(ticket.gadget_category.percentage) / 100;
+                            var price = parseFloat(ticket.device_price);
+                            var fixed = parseFloat(ticket.gadget_category.fixed);
+                            ticket.device_premium = Math.round((price * percentage) + fixed);
+
+                            return ticket;
                         }
                     }],
                 resolve: {
                     'hasHistory': ['$rootScope', function ($rootScope) {
                         $rootScope.hasHistory = true;
                     }],
-                    'Ticket': ['TicketServ', '$stateParams', function (TicketServ, $stateParams) {
-                        return TicketServ.get({id: $stateParams.id});
-                    }]
-                }
-            }
-        );
-
-
-        $stateProvider.state('ticket.accept-terms',
-            {
-                url: '/accept-terms/{id}',
-                templateUrl: 'partials/ticket/evaluation/terms.html',
-                controller: ['$scope', '$stateParams', '$state','TicketServ','ToastService',
-                    function ($scope, $stateParams, $state,TicketServ,ToastService) {
-                    $scope.image = {
-                        src: '',
-                        encoded: '',
-                        showCamera: true
-                    };
-
-                    if (typeof $stateParams.id == "undefined")
-                        $state.go('ticket.add.stepOne');
-
-                    $scope.next = function () {
-                        TicketServ.update({id: $stateParams.id},{image_url: $scope.image.src}).$promise.then(function(){
-                            $state.go('ticket.review-ticket', {id: $stateParams.id});
-                        },function(){
-                            ToastService.error("Could not save image");
-                        });
-                    };
-                }],
-                resolve: {
-                    'hasHistory': ['$rootScope', function ($rootScope) {
-                        $rootScope.hasHistory = true;
-                    }]
-                }
-            }
-        );
-
-
-        $stateProvider.state('ticket.review-ticket',
-            {
-                url: '/review/{id}',
-                templateUrl: 'partials/ticket/evaluation/review.html',
-                controller: ['$scope', '$stateParams', 'Ticket', 'TicketServ', '$state', 'MailServ',
-                    function ($scope, $stateParams, Ticket, TicketServ, $state, MailServ) {
-
-                        if (typeof $stateParams.id == "undefined")
-                            $state.go('ticket.add.stepOne');
-
-                        $scope.ticket = Ticket;
-
-                        $scope.next = function () {
-                            Ticket.discount_voucher_code = $scope.ticket.discount_voucher_code;
-                            TicketServ.update({id: Ticket.id}, Ticket);
-
-                            MailServ.save({'ticket_id': Ticket.id}, function (mail) {
-                                console.log(mail);
-                            });
-
-                            $state.go('ticket.all-done');
-                        }
+                    'Ticket': ['TicketService', '$stateParams', function (TicketService, $stateParams) {
+                        return TicketService.get({id: $stateParams.id});
                     }],
-                resolve: {
-                    'Ticket': ['TicketServ', '$state', '$stateParams',
-                        function (TicketServ, $state, $stateParams) {
-                            return TicketServ.get({id: $stateParams.id});
-                        }],
-                    'hasHistory': ['$rootScope', function ($rootScope) {
-                        $rootScope.hasHistory = true;
-                    }]
-                }
-            }
-        );
-
-        $stateProvider.state('ticket.all-done',
-            {
-                url: '/done',
-                templateUrl: 'partials/ticket/done.html',
-                controller: function () {
-                },
-                resolve: {
-                    'hasHistory': ['$rootScope', function ($rootScope) {
-                        $rootScope.hasHistory = true;
+                    'GadgetCategories': ['GadgetCategoryService', function (GadgetCategoryService) {
+                        return GadgetCategoryService.query({});
+                    }],
+                    'Vendors': ['VendorService', function (VendorService) {
+                        return VendorService.query({});
                     }]
                 }
             }
@@ -533,8 +499,8 @@ app.config(['$urlRouterProvider', '$stateProvider',
                     $scope.search = $stateParams.q;
                 }],
                 resolve: {
-                    'result': ['$stateParams', 'TicketServ', function ($stateParams, TicketServ) {
-                        return TicketServ.query({q: $stateParams.q});
+                    'result': ['$stateParams', 'TicketService', function ($stateParams, TicketService) {
+                        return TicketService.query({q: $stateParams.q});
                     }],
                     'hasHistory': ['$rootScope', function ($rootScope) {
                         $rootScope.hasHistory = true;

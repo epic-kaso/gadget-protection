@@ -6627,7 +6627,7 @@ body .my-menu-group .list-group-item.active span {
   color: #000000;
 }
 .icon-addon.addon-lg .form-control,
-input.form-control.inmate-search-box,
+.form-control.inmate-search-box,
 .evaluate .form-control {
   box-shadow: none;
   height: 50px;

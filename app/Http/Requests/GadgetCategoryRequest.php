@@ -1,7 +1,5 @@
 <?php namespace SupergeeksGadgetProtection\Http\Requests;
 
-use SupergeeksGadgetProtection\Http\Requests\Request;
-
 class GadgetCategoryRequest extends Request {
 
 	/**
@@ -22,7 +20,9 @@ class GadgetCategoryRequest extends Request {
 	public function rules()
 	{
         return [
-            'name' => 'required'
+            'name' => 'required|unique:gadget_categories',
+            'percentage' => 'required|numeric',
+            'fixed' => 'required|integer',
         ];
 	}
 
