@@ -1,5 +1,5 @@
 <div class="inmates-menu-items">
-    <a ui-sref="ticket.show({id: ticket.id})" class="menu-item inmate-item" ng-repeat="ticket in tickets">
+    <a ui-sref="ticket.show({id: ticket.id})" class="menu-item inmate-item" ng-repeat="ticket in tickets.data">
         <div class="inmate-pic">
             <span class="fa fa-user"></span>
         </div>
@@ -16,7 +16,9 @@
 
 <nav>
     <ul class="pager search-result-pager">
-        <li><a href="#"><span class="fa fa-chevron-left"></span></a></li>
-        <li><a href="#"><span class="fa fa-chevron-right"></span></a></li>
+        <li ng-show="tickets.prev_page_url"><a href="#" ng-click="getData(tickets.prev_page_url)"><span
+                class="fa fa-chevron-left"></span></a></li>
+        <li ng-show="tickets.next_page_url"><a href="#" ng-click="getData(tickets.next_page_url)"><span
+                class="fa fa-chevron-right"></span></a></li>
     </ul>
 </nav>

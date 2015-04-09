@@ -216,7 +216,7 @@ app.config(['$urlRouterProvider', '$stateProvider',
                 url: '/list',
                 templateUrl: 'partials/ticket/list.html',
                 controller: ['$scope', 'Tickets', 'TicketService', function ($scope, Tickets, TicketService) {
-                    $scope.tickets = Tickets.data;
+                    $scope.tickets = Tickets;
 
                     $scope.deleteItem = function (id) {
                         TicketService.delete({id: id}, function (response) {
