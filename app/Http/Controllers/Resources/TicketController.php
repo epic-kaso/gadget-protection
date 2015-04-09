@@ -47,6 +47,7 @@ class TicketController extends Controller
     {
         $data = $request->only(['device_make',
             'device_model',
+            'serial_number',
             'gadget_category_id',
             'vendor_id',
             'device_receipt_id',
@@ -99,6 +100,7 @@ class TicketController extends Controller
         $data = $request->only([
             'device_make',
             'device_model',
+            'serial_number',
             'gadget_category_id',
             'vendor_id',
             'device_receipt_id',

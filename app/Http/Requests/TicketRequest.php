@@ -36,6 +36,7 @@ class TicketRequest extends Request
             return [
                 'device_make' => 'required',
                 'device_model' => 'required',
+                'serial_number' => 'required',
                 'gadget_category_id' => 'required',
                 'vendor_id' => 'required',
                 'device_receipt_id' => 'required',

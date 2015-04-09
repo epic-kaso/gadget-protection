@@ -84,6 +84,14 @@
                     </td>
                 </tr>
                 <tr>
+                    <td>Device Serial/IMEI</td>
+                    <td ng-hide="editMode"><strong>{{ ticket.serial_number || 'N/A' }}</strong></td>
+                    <td ng-show="editMode">
+                        <input class="form-control" type="text" ng-model="editTicket.serial_number"/>
+                    </td>
+                </tr>
+
+                <tr>
                     <td>Device Price</td>
                     <td ng-hide="editMode"><strong>{{ ticket.device_price | currency:'₦':0 }}</strong></td>
                     <td ng-show="editMode">
