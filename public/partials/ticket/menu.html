@@ -29,7 +29,7 @@
 <hr/>
 <div class="inmates-menu-items">
     <span class="btn btn-xs pull-right"><span class="fa fa-pencil"></span></span>
-    <a ui-sref="ticket.show({id: ticket.id})" class="menu-item inmate-item" ng-repeat="ticket in tickets">
+    <a ui-sref="ticket.show({id: ticket.id})" class="menu-item inmate-item" ng-repeat="ticket in tickets.data">
         <div class="inmate-pic">
             <span class="fa fa-user"></span>
         </div>
