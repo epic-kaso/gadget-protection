@@ -197,7 +197,7 @@ app.config(['$urlRouterProvider', '$stateProvider',
                 templateUrl: 'partials/ticket/menu.html',
                 controller: ['$scope', 'Tickets','ShowSettings', function ($scope, Tickets,ShowSettings) {
                     $scope.showSettings = ShowSettings;
-                    $scope.tickets = Tickets.data;
+                    $scope.tickets = Tickets;
                 }],
                 resolve: {
                     'hasHistory': ['$rootScope', function ($rootScope) {
