@@ -70,25 +70,27 @@ app.config(['$urlRouterProvider', '$stateProvider',
                         return GadgetCategoryService.query({});
                     }]
                 },
-                controller: ['$scope', 'GadgetCategoryService', 'GadgetCategories', function ($scope, GadgetCategoryService, GadgetCategories) {
-                    $scope.models = GadgetCategories;
+                controller: ['$scope', 'GadgetCategoryService', 'GadgetCategories',
+                    function ($scope, GadgetCategoryService, GadgetCategories) {
+                        $scope.models = GadgetCategories;
 
-                    $scope.addGadgetCategory = function (category, event) {
-                        GadgetCategoryService.save(category,function(response){
-                            $scope.models.push(response);
-                        },function(){
-                            alert('Failed To Create');
-                        });
+                        $scope.addGadgetCategory = function (category, event) {
+                            GadgetCategoryService.save(category, function (response) {
+                                $scope.models.push(response);
+                            }, function () {
+                                alert('Failed To Create');
+                            });
 
-                        event.preventDefault();
-                    };
-                    $scope.deleteItem = function (id,index) {
-                        GadgetCategoryService.delete({id: id}, function (response) {
-                            $scope.models.splice(index,1);
-                        }, function (response) {
-                            alert(response);
-                        });
-                    }
+                            event.preventDefault();
+                        };
+
+                        $scope.deleteItem = function (id, index) {
+                            GadgetCategoryService.delete({id: id}, function (response) {
+                                $scope.models.splice(index, 1);
+                            }, function (response) {
+                                alert(response);
+                            });
+                        };
                 }]
             }
         );

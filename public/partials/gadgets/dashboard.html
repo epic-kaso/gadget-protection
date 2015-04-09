@@ -16,7 +16,7 @@
                 </span> Add Category</h3>
             <hr/>
             <div ng-show="showAddForm">
-                <form name="addGadgetCategory">
+                <form name="addGadgetCategoryForm">
                     <div class="form-group col-sm-12">
                         <input type="text" ng-model="add_gadget_category.name" required=""
                                class="form-control inmate-search-box" placeholder="Add Gadget Category eg Electronics">
@@ -33,7 +33,7 @@
                     </div>
                     <div class="form-group col-sm-4">
                         <a href="#" ng-click="addGadgetCategory(add_gadget_category,$event)"
-                           ng-disabled="addGadgetCategory.$invalid" class="btn btn-primary btn-block">Add</a>
+                           ng-disabled="addGadgetCategoryForm.$invalid" class="btn btn-primary btn-block">Add</a>
                     </div>
                 </form>
             </div>
