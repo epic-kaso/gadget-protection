@@ -36,6 +36,7 @@ class ExportTicketController extends Controller
     /**
      * Store a newly created resource in storage.
      *
+     * @param ExportTicketRequest $request
      * @return Response
      */
     public function store(ExportTicketRequest $request)
@@ -51,15 +52,12 @@ class ExportTicketController extends Controller
         } else {
             foreach ($columns as $key => $value) {
                 if ($value) {
-                    if ($key != 'gadget_category_id' && $key != 'vendor_id')
-                        $selectCols[] = $key;
+                    $selectCols[] = $key;
                 }
             }
-
-
         }
-        $builder = Ticket::with(['gadget_category', 'vendor']);
 
+        $builder = Ticket::with(['gadget_category', 'vendor']);
 
         if (is_numeric($gadget_category_id)) {
             $builder->where('gadget_category_id', $gadget_category_id);
