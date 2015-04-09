@@ -73,11 +73,11 @@ class ExportTicketController extends Controller
 
         foreach ($data as $d) {
 
-            if (property_exists($d, 'vendor')) {
+            if (isset($d->vendor_id)) {
                 $d->vendor_name = $d->vendor->name;
                 unset($d->vendor_id);
             }
-            if (property_exists($d, 'gadget_category')) {
+            if (isset($d->gadget_category_id)) {
                 $d->gadget_category_name = $d->gadget_category->name;
                 unset($d->gadget_category_id);
             }
