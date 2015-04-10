@@ -12,17 +12,18 @@
                                 <div class="list-group my-menu-group">
                                     <a class="list-group-item"
                                        ng-class="{'active': active_nav == 'ticket'}"
-                                       ui-sref="ticket.menu"><span class="fa fa-ticket"></span> Tickets</a>
+                                       ui-sref="ticket.menu"><span class="fa fa-ticket"></span> GPP Customers</a>
 
                                     <a class="list-group-item"
                                        ng-class="{'active': active_nav == 'gadgets'}"
-                                       ui-sref="gadgets"><span class="fa fa-mobile-phone"></span> Supported Gadgets</a>
+                                       ui-sref="gadgets"><span class="fa fa-mobile-phone"></span> Supported
+                                        Categories</a>
                                     <a class="list-group-item"
                                        ng-class="{'active': active_nav == 'advisers'}"
                                        ui-sref="advisers.menu"><span class="fa fa-user-secret"></span> Advisers</a>
                                     <a class="list-group-item"
                                        ng-class="{'active': active_nav == 'vendors'}"
-                                       ui-sref="vendors"><span class="fa fa-apple"></span> Vendors</a>
+                                       ui-sref="vendors"><span class="fa fa-apple"></span> Retail Partners</a>
                                     <a class="list-group-item" ui-sref="config"
                                        ng-class="{'active': active_nav == 'config'}"><span class="fa fa-cogs"></span>
                                         Settings</a>

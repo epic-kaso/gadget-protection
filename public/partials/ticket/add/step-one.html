@@ -23,6 +23,14 @@
                class="form-control inmate-search-box"/>
     </div>
 
+    <div class="form-group">
+        <input type="text" required=""
+               placeholder="Device Price"
+               ng-pattern="/^\d+(\.\d+)?$/"
+               ng-model="ticket.device_price"
+               class="form-control inmate-search-box"/>
+    </div>
+
     <div class="form-group evaluate">
         <select class="form-control"
                 required=""
@@ -48,13 +56,6 @@
                class="form-control inmate-search-box"/>
     </div>
 
-    <div class="form-group">
-        <input type="text" required=""
-               placeholder="Price"
-               ng-pattern="/^\d+(\.\d+)?$/"
-               ng-model="ticket.device_price"
-               class="form-control inmate-search-box"/>
-    </div>
 
     <!---->
 
