@@ -33,20 +33,17 @@
             <a class="navbar-brand" href="/"><span style="
                             font-size: 25px;
                             font-weight: 600;
-                            color: #14abec;
                             /* text-shadow: 0px 1px 0px rgba(255,255,255,1); */
                             ">Super</span>
                 <span style="
                             font-size: 25px;
                             font-weight: 600;
-                            color: #fca42f;
-                            /* text-shadow: 0px 1px 0px rgba(255,255,255,1); */
                             margin-left: -5px;
 ">Geeks</span>
                 <span style="
                             font-size: 25px;
                             font-weight: 600;
-                            margin-left: 10px;">GPP</span></a>
+                            margin-left: -5px;">GPP</span></a>
         </div>
 
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
