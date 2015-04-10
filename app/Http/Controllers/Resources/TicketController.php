@@ -29,7 +29,7 @@ class TicketController extends Controller
      */
     public function index()
     {
-        $limit = \Input::get('limit', 20);
+        $limit = \Input::get('limit', 2000);
         if ($this->user->isAdmin()) {
             return Ticket::withData()->simplePaginate($limit);
         } else {
